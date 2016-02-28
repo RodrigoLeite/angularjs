@@ -4,6 +4,7 @@
 	<title>Lista Telefonica</title>
 	<link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="css/app.css">
+	<link rel="stylesheet" type="text/css" href="css/ui.css">
 	<script src="lib/angular/angular.min.js"></script>
 	<script src="lib/angular/angular-messages.js"></script>
 	<script src="lib/angular/angular-locale_pt-br.js"></script>
@@ -12,11 +13,22 @@
 	<script src="js/services/contatosAPIService.js"></script>
 	<script src="js/services/operadorasAPIService.js"></script>
 	<script src="js/values/configValue.js"></script>
+	<script src="js/filters/nameFilter.js"></script>
+	<script src="js/filters/ellipsisFilter.js"></script>
+	<script src="js/directives/uiAlertDirective.js"></script>
 </head>
 <body ng-controller="listaTelefonicaCtrl">
 	<div class="jumbotron">
 		<h3>{{app}}</h3>
-		{{message}}
+		
+		<ui-alert title="Ops, aconteceu um problema!">
+			{{message}}
+		</ui-alert>
+
+		<ui-alert title="Série sobre AngularJS">
+			Episódio 10 - Criando Directivas - Parte 1
+		</ui-alert>
+
 		<input type="text" class="form-control" ng-model="criterioDeBusca" placeholder="O que você está buscando?">
 		<input type="text" class="form-control" ng-model="criterioDeBuscaPorNome" placeholder="Nome">
 
@@ -31,7 +43,7 @@
 			</tr>
 			<tr ng-class="{'selecionado negrito' : contato.selecionado}" ng-repeat="contato in contatos | filter:criterioDeBusca | filter:{nome: criterioDeBuscaPorNome} | orderBy:criterioDeOrdenacao:direcaoDaOrdenacao" >
 				<td><input type="checkbox" ng-model="contato.selecionado"></td>
-				<td>{{contato.nome}}</td>
+				<td>{{contato.nome | name | ellipsis:10 }}</td>
 				<td>{{contato.telefone}}</td>
 				<td>{{contato.operadora.nome}}</td>
 				<td>{{contato.data | date:'dd/MM/yyyy HH:mm'}}</td>
